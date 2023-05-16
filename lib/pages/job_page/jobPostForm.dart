@@ -585,16 +585,20 @@ class _jobPostFormState extends State<jobPostForm> {
                                   RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50),
                           ))),
-                          onPressed: () {
+                          onPressed: () async{
+                             if (_formKey.currentState!.validate()) {
                             debugPrint('hI i am in onPressed func 1');
-                            uploadImage();
-                            debugPrint('hI i am in onPressed func 2');
-                            debugPrint(imageURL);
+                            Reference referenceDirImages = referenceRoot.child('images');
+                            String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+                            Reference referenceImagetoUpload = referenceDirImages.child(uniqueFileName);
+                            await referenceImagetoUpload.putFile(File(uploadimage!.path));
+                            imageURL2 = await referenceImagetoUpload.getDownloadURL();                            
+                            debugPrint("IMAGE URL : ${imageURL2}");
                             final job = JobModel(
                                 title: title.text.trim(),
                                 companyName: companyname.text.trim(),
                                 aboutCompany: aboutcompany.text.trim(),
-                                image: imageURL,
+                                image: imageURL2,
                                 workHour: workhour.text.trim(),
                                 minExp: minexp.text.trim(),
                                 minSal: minsal.text.trim(),
@@ -620,7 +624,7 @@ class _jobPostFormState extends State<jobPostForm> {
                                 MaterialPageRoute(
                                     builder: (context) => FirstPage()),
                                 (Route route) => false);
-                          },
+                          }},
                           child: Text(
                             'Submit Data',
                             style: kTitleStyle.copyWith(
@@ -634,14 +638,5 @@ class _jobPostFormState extends State<jobPostForm> {
     );
   }
 
-  uploadImage() async {
-    Reference referenceDirImages = referenceRoot.child('images');
-    String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
-    Reference referenceImagetoUpload = referenceDirImages.child(uniqueFileName);
-    await referenceImagetoUpload.putFile(File(uploadimage!.path));
-     imageURL = await referenceImagetoUpload.getDownloadURL();
-    debugPrint('hI i am in upload func');
-    debugPrint(imageURL);
-    
-  }
+
 }

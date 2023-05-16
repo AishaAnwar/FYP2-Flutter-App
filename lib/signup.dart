@@ -8,7 +8,6 @@ import 'package:login/Utils.dart';
 import 'package:login/animation/FadeAnimation.dart';
 import 'package:login/utils/constant.dart';
 import 'package:login/repository/user_repo/userRepo.dart';
-
 import 'models/user.dart';
 
 class SignupPage extends StatefulWidget {
@@ -198,6 +197,7 @@ class _SignupPageState extends State<SignupPage> {
       lastname: lastnameController.text.trim(),
       password: passwordController.text.trim(),
       phoneNo: numberController.text.trim(),
+      profileBool: false,
     );
     var UserRepositoryInstance = UserRepository();
     UserRepositoryInstance.createUser( user);

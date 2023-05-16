@@ -9,7 +9,7 @@ import 'package:login/pages/job_page/description_tab.dart';
 import 'package:login/pages/profile/details.dart';
 import 'package:login/pages/profile/skill.dart';
 import 'package:login/pages/profile/activities.dart';
-import 'package:login/pages/profile/studentProfileForm.dart';
+import 'package:login/pages/profile/editProfileFStudentForm.dart';
 
 class profile extends StatelessWidget {
   final Student? student;

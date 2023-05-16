@@ -1,9 +1,13 @@
 library globals;
 
+import '../models/createProfileStudentModel.dart';
 import '../models/jobModel.dart';
 
 String dropdownValue="";
+String imageURL2="";
+String imageURL1="";
 String imageURL="";
+CreateProfileStudentModel profile = CreateProfileStudentModel();
 List<JobModel> _jobs = [
     JobModel(
       title: 'Senior UI/UX Designer',

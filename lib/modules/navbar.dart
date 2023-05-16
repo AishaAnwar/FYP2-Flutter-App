@@ -14,6 +14,9 @@ import 'package:login/models/student.dart';
 import 'package:login/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../pages/CreateProfile/createProfileForm.dart';
+import '../verifyCreaProfilePage.dart';
+
 class Navbar extends StatefulWidget {
   @override
   _NavbarState createState() => _NavbarState();
@@ -53,7 +56,7 @@ int currentIndex = 0;
     feed(),
     post(),
     notification(),
-    // jobDisplay(),
+    jobDisplay(),
   ];
   PageController controller = PageController();
   var currentPage = DrawerSections.profile;
@@ -65,9 +68,11 @@ int currentIndex = 0;
       container = profile(student: _student);
     } else if (currentPage == DrawerSections.setting) {
       container = setting();
-    } else {
+    } else if (currentPage == DrawerSections.setting) {
       container = profile(student: _student);
-    } 
+    } else if (currentPage == DrawerSections.createprofile) {
+      container = CreateProfile();
+    }
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -193,7 +198,10 @@ int currentIndex = 0;
               currentPage == DrawerSections.profile ? true : false),
           menuItem(2, "Settings", Icons.settings,
               currentPage == DrawerSections.setting ? true : false),
-          menuItem(3,"Sign-out", Icons.logout, true)
+          menuItem(3,"Signed Out", Icons.logout_outlined,
+           currentPage == DrawerSections.createprofile ? true : false),    
+          menuItem(4,"Create Profile", Icons.create_outlined,
+           currentPage == DrawerSections.createprofile ? true : false),
           
         ],
       ),
@@ -239,8 +247,13 @@ int currentIndex = 0;
             } else if (id == 2) {
               currentPage = DrawerSections.setting;
             } else if (id == 3) {
+              currentPage = DrawerSections.profile;
                _showDialog();
-            } 
+            } else  if (id == 4){
+              currentPage = DrawerSections.createprofile;
+              Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyCreaProfilePage()));
+            }
+
           });
         },
         child: Padding(
@@ -276,5 +289,7 @@ int currentIndex = 0;
 enum DrawerSections {
   profile,
   setting,
-  // signout, 
+  signout, 
+  createprofile,
+  
 }
