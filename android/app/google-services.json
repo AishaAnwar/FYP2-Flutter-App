@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "739402578429",
+    "project_id": "earnfromlearn-4d1a5",
+    "storage_bucket": "earnfromlearn-4d1a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739402578429:android:660315cef449d6537ec194",
+        "android_client_info": {
+          "package_name": "com.example.login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739402578429-odg57pj27k75scntcgkvt9ci2m7gp4no.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0Apsc52R8QX6sda0yJ0M5bgpCE0r50wY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739402578429-odg57pj27k75scntcgkvt9ci2m7gp4no.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
