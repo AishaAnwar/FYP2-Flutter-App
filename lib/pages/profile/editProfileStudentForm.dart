@@ -1,15 +1,14 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:login/utils/constant.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../firstpage.dart';
+import '../../models/createProfileStudentModel.dart';
+import '../../repository/profileRepo.dart';
+import '../../utils/myGlobals.dart';
 
 const List<String> list = <String>['Female', 'Male', 'Other'];
-
-class studentProfileForm extends StatefulWidget {
-  const studentProfileForm({super.key});
-
-  @override
-  State<studentProfileForm> createState() => _studentProfileFormState();
-}
 
 class dropdown extends StatefulWidget {
   const dropdown({super.key});
@@ -45,7 +44,14 @@ class _dropdownState extends State<dropdown> {
   }
 }
 
-class _studentProfileFormState extends State<studentProfileForm> {
+class studentProfileFormState extends StatefulWidget {
+  const studentProfileFormState({super.key});
+
+  @override
+  State<studentProfileFormState> createState() => _studentProfileFormState();
+}
+
+class _studentProfileFormState extends State<studentProfileFormState> {
   TextEditingController firstname = TextEditingController();
   TextEditingController lastname = TextEditingController();
   TextEditingController gender = TextEditingController();
@@ -55,20 +61,19 @@ class _studentProfileFormState extends State<studentProfileForm> {
   TextEditingController interests = TextEditingController();
   TextEditingController education = TextEditingController();
   TextEditingController website = TextEditingController();
-  TextEditingController email = TextEditingController();
   TextEditingController git = TextEditingController();
   TextEditingController linkedin = TextEditingController();
-  TextEditingController city = TextEditingController();
-  TextEditingController country = TextEditingController();
   TextEditingController skill = TextEditingController();
   TextEditingController projects = TextEditingController();
   TextEditingController achievement = TextEditingController();
   TextEditingController activities = TextEditingController();
+  TextEditingController email = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   List allTextField = [];
   List displayTextField = [];
   XFile? uploadimage;
   final ImagePicker picker = ImagePicker();
+  Reference referenceRoot = FirebaseStorage.instance.ref();
 
 //we can upload image from camera or from gallery based on parameter
   Future getImage(ImageSource media) async {
@@ -167,7 +172,7 @@ class _studentProfileFormState extends State<studentProfileForm> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "EDIT PROFILE",
+                          "Upload Profile",
                           style: TitleStyle,
                         ),
                         const SizedBox(
@@ -205,15 +210,18 @@ class _studentProfileFormState extends State<studentProfileForm> {
                   ),
                   TextFormField(
                     controller: firstname,
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
                       label: Text("First Name"),
                       hintText: 'Enter first name.',
                       hintStyle:
                           TextStyle(color: Color(0xFFCAC1DF), fontSize: 12),
                     ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Required Name';
+                        return 'Required First Name';
                       }
                       return null;
                     },
@@ -223,15 +231,18 @@ class _studentProfileFormState extends State<studentProfileForm> {
                   ),
                   TextFormField(
                     controller: lastname,
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
                       label: Text("Last Name"),
                       hintText: 'Enter last name.',
                       hintStyle:
                           TextStyle(color: Color(0xFFCAC1DF), fontSize: 12),
                     ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Required Name  ';
+                        return 'Required Last Name  ';
                       }
                       return null;
                     },
@@ -245,15 +256,18 @@ class _studentProfileFormState extends State<studentProfileForm> {
                   ),
                   TextFormField(
                     controller: address,
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.text,
                     decoration: const InputDecoration(
                       label: Text("Address"),
                       hintText: 'Enter your address.',
                       hintStyle:
                           TextStyle(color: Color(0xFFCAC1DF), fontSize: 12),
                     ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Required Name  ';
+                        return 'Required Address ';
                       }
                       return null;
                     },
@@ -263,6 +277,7 @@ class _studentProfileFormState extends State<studentProfileForm> {
                   ),
                   TextFormField(
                     controller: headline,
+                    textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.multiline,
                     maxLines: 4,
                     decoration: const InputDecoration(
@@ -272,9 +287,10 @@ class _studentProfileFormState extends State<studentProfileForm> {
                             TextStyle(color: Color(0xFFCAC1DF), fontSize: 12),
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(width: 1, color: kBlack))),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Required Name  ';
+                        return 'Required Headline';
                       }
                       return null;
                     },
@@ -288,18 +304,18 @@ class _studentProfileFormState extends State<studentProfileForm> {
                   ),
                   TextFormField(
                     controller: contactno,
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                       label: Text("Contact No"),
-                      hintText: 'Enter contact no. e.g: +92 000 0000000',
+                      hintText: 'Enter contact no. e.g:"03XXXXXXXXX",',
                       hintStyle:
                           TextStyle(color: Color(0xFFCAC1DF), fontSize: 12),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Required Name  ';
-                      }
-                      return null;
-                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) => value != null && value.length < 11
+                        ? 'Enter a valid number without dash.'
+                        : null,
                   ),
                   const SizedBox(
                     height: 12,
@@ -312,6 +328,20 @@ class _studentProfileFormState extends State<studentProfileForm> {
                       hintStyle:
                           TextStyle(color: Color(0xFFCAC1DF), fontSize: 12),
                     ),
+                    textInputAction: TextInputAction.next,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (website) {
+                      String pattern =
+                          r'^((?:.|\n)*?)((http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?)';
+                      RegExp regExp = RegExp(pattern);
+                      if (website!.isEmpty) {
+                        return "Please enter your website";
+                      } else if (!(regExp.hasMatch(website))) {
+                        return "Website Url must be started from www";
+                      } else {
+                        return null;
+                      }
+                    },
                   ),
                   const SizedBox(
                     height: 12,
@@ -324,6 +354,7 @@ class _studentProfileFormState extends State<studentProfileForm> {
                       hintStyle:
                           TextStyle(color: Color(0xFFCAC1DF), fontSize: 12),
                     ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Required Name  ';
@@ -342,11 +373,19 @@ class _studentProfileFormState extends State<studentProfileForm> {
                       hintStyle:
                           TextStyle(color: Color(0xFFCAC1DF), fontSize: 12),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Required Name  ';
+                    textInputAction: TextInputAction.next,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (website) {
+                      String pattern =
+                          r'^((?:.|\n)*?)((http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?)';
+                      RegExp regExp = RegExp(pattern);
+                      if (website!.isEmpty) {
+                        return "Please enter your website";
+                      } else if (!(regExp.hasMatch(website))) {
+                        return "Website Url must be started from www";
+                      } else {
+                        return null;
                       }
-                      return null;
                     },
                   ),
                   const SizedBox(
@@ -360,11 +399,19 @@ class _studentProfileFormState extends State<studentProfileForm> {
                       hintStyle:
                           TextStyle(color: Color(0xFFCAC1DF), fontSize: 12),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Required Name  ';
+                    textInputAction: TextInputAction.next,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (website) {
+                      String pattern =
+                          r'^((?:.|\n)*?)((http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?)';
+                      RegExp regExp = RegExp(pattern);
+                      if (website!.isEmpty) {
+                        return "Please enter your website";
+                      } else if (!(regExp.hasMatch(website))) {
+                        return "Website Url must be started from www";
+                      } else {
+                        return null;
                       }
-                      return null;
                     },
                   ),
                   const SizedBox(
@@ -379,6 +426,7 @@ class _studentProfileFormState extends State<studentProfileForm> {
                   ),
                   TextFormField(
                     controller: education,
+                    textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.multiline,
                     maxLines: 8,
                     decoration: const InputDecoration(
@@ -388,9 +436,10 @@ class _studentProfileFormState extends State<studentProfileForm> {
                             TextStyle(color: Color(0xFFCAC1DF), fontSize: 12),
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(width: 1, color: kBlack))),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Required Name  ';
+                        return 'Required Education ';
                       }
                       return null;
                     },
@@ -402,6 +451,7 @@ class _studentProfileFormState extends State<studentProfileForm> {
                     controller: interests,
                     keyboardType: TextInputType.multiline,
                     maxLines: 8,
+                    textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                         label: Text("Interest"),
                         hintText: 'Enter your professional interests.',
@@ -409,9 +459,10 @@ class _studentProfileFormState extends State<studentProfileForm> {
                             TextStyle(color: Color(0xFFCAC1DF), fontSize: 12),
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(width: 1, color: kBlack))),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Required Name  ';
+                        return 'Required professional interests  ';
                       }
                       return null;
                     },
@@ -423,6 +474,7 @@ class _studentProfileFormState extends State<studentProfileForm> {
                     controller: skill,
                     keyboardType: TextInputType.multiline,
                     maxLines: 8,
+                    textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                         label: Text("Skills"),
                         hintText: 'Enter your professional skills.',
@@ -430,9 +482,10 @@ class _studentProfileFormState extends State<studentProfileForm> {
                             TextStyle(color: Color(0xFFCAC1DF), fontSize: 12),
                         focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(width: 1, color: kBlack))),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Required Name  ';
+                        return 'Required Skills';
                       }
                       return null;
                     },
@@ -444,6 +497,7 @@ class _studentProfileFormState extends State<studentProfileForm> {
                     controller: projects,
                     keyboardType: TextInputType.multiline,
                     maxLines: 8,
+                    textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                         label: Text("Projects"),
                         hintText: 'Enter your projects.',
@@ -459,6 +513,7 @@ class _studentProfileFormState extends State<studentProfileForm> {
                     controller: achievement,
                     keyboardType: TextInputType.multiline,
                     maxLines: 8,
+                    textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                         label: Text("Achievement"),
                         hintText: 'Enter your achievements.',
@@ -473,6 +528,7 @@ class _studentProfileFormState extends State<studentProfileForm> {
                   TextFormField(
                     controller: activities,
                     keyboardType: TextInputType.multiline,
+                    textInputAction: TextInputAction.next,
                     maxLines: 8,
                     decoration: const InputDecoration(
                         label: Text("Extracurricular Activities"),
@@ -496,44 +552,40 @@ class _studentProfileFormState extends State<studentProfileForm> {
                                 RoundedRectangleBorder>(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50),
                         ))),
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            List finalDynamicTextFieldValue = [];
+                            
+                            Reference referenceDirImages = referenceRoot.child('images');
+                            String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
+                            Reference referenceImagetoUpload = referenceDirImages.child(uniqueFileName);
+                            await referenceImagetoUpload.putFile(File(uploadimage!.path));
+                            imageURL3 = await referenceImagetoUpload.getDownloadURL();
+                            profile = CreateProfileStudentModel(
+                                firstName: firstname.text.trim(),
+                                lastName: lastname.text.trim(),
+                                image: imageURL3,
+                                gender: gender.text.trim(),
+                                address: address.text.trim(),
+                                headline: headline.text.trim(),
+                                contactNo: contactno.text.trim(),
+                                website: website.text.trim(),
+                                git: git.text.trim(),
+                                linkedIn: linkedin.text.trim(),
+                                interest: interests.text.trim(),
+                                education: education.text.trim(),
+                                skill: skill.text.trim(),
+                                project: projects.text.trim(),
+                                activities: activities.text.trim(),
+                                achievement: achievement.text.trim(),
+                                email: email.text.trim());
+                            
+                            var createProfileRepoInstance = CreateProfileRepo();
+                            createProfileRepoInstance.updateProfile(profile);
 
-                            if (displayTextField.isNotEmpty) {
-                              for (int i = 0;
-                                  i < displayTextField.length;
-                                  i++) {
-                                TextEditingController taxValue =
-                                    displayTextField[i]['value'];
-
-                                Map dummyMap = {
-                                  "${displayTextField[i]['keyforbackend']}":
-                                      taxValue.text
-                                };
-                                print(dummyMap);
-                                finalDynamicTextFieldValue.add(dummyMap);
-                              }
-                            }
-
-                            Map requiredFormDataForBackend = {
-                              // 'title': title.text,
-                              // "tag": finalDynamicTextFieldValue,
-                              // 'compName': companyname.text,
-                              // 'image': image,
-                              // 'workHour': workhour.value,
-                              // 'minExp': minexp.text,
-                              // 'minSal': minsal.value,
-                              // 'maxSak': maxsal.value,
-                              // 'position': position.text,
-                              // 'city': city.text,
-                              // 'country': country.text,
-                              // 'mainCriteria': maincriteria.text,
-                              // 'jobOpp': jobopp.text,
-                              // 'jobRes': jobres.text,
-                              // 'aboutCompany': aboutcompany.text,
-                            };
-                            print("Final Data $requiredFormDataForBackend");
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => FirstPage()),
+                                (Route route) => false);
                           }
                         },
                         child: Text(
@@ -549,4 +601,6 @@ class _studentProfileFormState extends State<studentProfileForm> {
       ]),
     );
   }
+
+  
 }

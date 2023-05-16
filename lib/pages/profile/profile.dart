@@ -9,7 +9,7 @@ import 'package:login/pages/job_page/description_tab.dart';
 import 'package:login/pages/profile/details.dart';
 import 'package:login/pages/profile/skill.dart';
 import 'package:login/pages/profile/activities.dart';
-import 'package:login/pages/profile/editProfileFStudentForm.dart';
+import 'package:login/pages/profile/editProfileStudentForm.dart';
 
 class profile extends StatelessWidget {
   final Student? student;
@@ -30,7 +30,7 @@ class profile extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => studentProfileForm()));
+                              builder: (context) => studentProfileFormState()));
                     },
                     icon: Icon(LineIcons.userEdit, color: Colors.black,)),
               ),

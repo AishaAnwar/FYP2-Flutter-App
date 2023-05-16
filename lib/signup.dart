@@ -7,7 +7,7 @@ import 'package:login/main.dart';
 import 'package:login/Utils.dart';
 import 'package:login/animation/FadeAnimation.dart';
 import 'package:login/utils/constant.dart';
-import 'package:login/repository/user_repo/userRepo.dart';
+import 'package:login/repository/userRepo.dart';
 import 'models/user.dart';
 
 class SignupPage extends StatefulWidget {

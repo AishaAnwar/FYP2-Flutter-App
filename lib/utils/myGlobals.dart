@@ -4,6 +4,7 @@ import '../models/createProfileStudentModel.dart';
 import '../models/jobModel.dart';
 
 String dropdownValue="";
+String imageURL3="";
 String imageURL2="";
 String imageURL1="";
 String imageURL="";

@@ -8,7 +8,7 @@ import 'package:login/firstpage.dart';
 import 'package:login/animation/FadeAnimation.dart';
 import 'package:login/Utils.dart';
 import 'package:login/pages/CreateProfile/createProfileForm.dart';
-import 'package:login/pages/profile/editProfileFStudentForm.dart';
+import 'package:login/pages/profile/editProfileStudentForm.dart';
 import 'package:login/utils/myGlobals.dart';
 
 import 'models/createProfileStudentModel.dart';
@@ -98,7 +98,7 @@ class _VerifyCreaProfilePage extends State<VerifyCreaProfilePage> {
            FadeAnimation(1.5, MaterialButton(
                             minWidth: double.infinity,
                             height: 50,
-                            onPressed:()=>studentProfileForm(),
+                            onPressed:()=>studentProfileFormState(),
                             shape: RoundedRectangleBorder(
                       side: BorderSide(
                         color: Colors.black

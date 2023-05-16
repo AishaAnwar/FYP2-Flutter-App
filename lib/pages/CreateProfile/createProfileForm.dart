@@ -5,7 +5,7 @@ import 'package:login/utils/constant.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../firstpage.dart';
 import '../../models/createProfileStudentModel.dart';
-import '../../repository/createProfileRepo.dart';
+import '../../repository/profileRepo.dart';
 import '../../utils/myGlobals.dart';
 
 const List<String> list = <String>['Female', 'Male', 'Other'];
