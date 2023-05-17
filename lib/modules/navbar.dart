@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:login/pages/VideoCall/videoCall.dart';
 import 'package:login/pages/post.dart';
 import 'package:login/pages/feed/feed.dart';
 import 'package:login/firstpage.dart';
@@ -72,6 +73,8 @@ int currentIndex = 0;
       container = profile(student: _student);
     } else if (currentPage == DrawerSections.createprofile) {
       container = CreateProfile();
+    }else if (currentPage == DrawerSections.videocall) {
+      container = VideoCallPage();
     }
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -202,6 +205,8 @@ int currentIndex = 0;
            currentPage == DrawerSections.createprofile ? true : false),    
           menuItem(4,"Create Profile", Icons.create_outlined,
            currentPage == DrawerSections.createprofile ? true : false),
+           menuItem(5,"Interview", Icons.video_call_outlined,
+           currentPage == DrawerSections.createprofile ? true : false),
           
         ],
       ),
@@ -252,6 +257,9 @@ int currentIndex = 0;
             } else  if (id == 4){
               currentPage = DrawerSections.createprofile;
               Navigator.push(context, MaterialPageRoute(builder: (context) => VerifyCreaProfilePage()));
+            }else  if (id == 5){
+              currentPage = DrawerSections.createprofile;
+              Navigator.push(context, MaterialPageRoute(builder: (context) => VideoCallPage()));
             }
 
           });
@@ -291,5 +299,5 @@ enum DrawerSections {
   setting,
   signout, 
   createprofile,
-  
+  videocall,
 }
