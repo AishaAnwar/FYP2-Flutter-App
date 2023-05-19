@@ -22,7 +22,7 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
-                image: AssetImage('assets/profile.jpg'),
+                image: AssetImage('assets/profile1.jpg'),
               ),
             ),
           ),
@@ -31,7 +31,7 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           Text(
-            "aishaanwar016@gmail.com",
+            "k191076@nu.edu.pk",
             style: TextStyle(
               color: Colors.grey[200],
               fontSize: 14,

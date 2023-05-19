@@ -18,23 +18,23 @@ class _postState extends State<post> {
           const SizedBox(
                     height: 50,
                   ),
-          ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>jobPostForm()));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: kblue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                      ),
-                    ),
-                    child: Text(
-                      "Post Job",
-                      style: kTitleStyle.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+          // ElevatedButton(
+          //           onPressed: () {
+          //             Navigator.push(context, MaterialPageRoute(builder: (context) =>jobPostForm()));
+          //           },
+          //           style: ElevatedButton.styleFrom(
+          //             primary: kblue,
+          //             shape: RoundedRectangleBorder(
+          //               borderRadius: BorderRadius.circular(50.0),
+          //             ),
+          //           ),
+          //           child: Text(
+          //             "Post Job",
+          //             style: kTitleStyle.copyWith(
+          //               color: Colors.white,
+          //             ),
+          //           ),
+          //         ),
           ElevatedButton(
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) =>feedPostForm()));
